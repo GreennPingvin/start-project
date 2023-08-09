@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const mode = process.env.NODE_ENV || "development";
 
@@ -27,12 +28,38 @@ module.exports = {
       template: path.resolve(__dirname, "src", "index.html"),
     }),
     new webpack.ProgressPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "css.[name].[contenthash].css",
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.html$/i,
         loader: "html-loader",
+      },
+      {
+        test: /\.(c|sc|sa)ss$/i,
+        use: [
+          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    require("postcss-preset-env"),
+                    {
+                      // Options
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+          "sass-loader",
+        ],
       },
     ],
   },

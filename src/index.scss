@@ -1,0 +1,20 @@
+@import "styles/reset";
+@import "styles/variables";
+
+body {
+  background-color: beige;
+}
+
+h1 {
+  background-color: black;
+  color: white;
+}
+
+.outer {
+  .inner {
+    background-color: green;
+    color: white;
+    display: grid;
+    user-select: none;
+  }
+}
