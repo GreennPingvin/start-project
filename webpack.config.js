@@ -22,10 +22,11 @@ module.exports = {
   devServer: {
     port: 3000,
     open: true,
+    hot: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "src", "index.html"),
+      template: path.resolve(__dirname, "static", "index.html"),
     }),
     new webpack.ProgressPlugin(),
     new MiniCssExtractPlugin({
@@ -34,10 +35,6 @@ module.exports = {
   ],
   module: {
     rules: [
-      {
-        test: /\.html$/i,
-        loader: "html-loader",
-      },
       {
         test: /\.(c|sc|sa)ss$/i,
         use: [
