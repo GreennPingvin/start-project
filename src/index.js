@@ -1,3 +1,5 @@
-const mult = (a, b) => a * b
+import "./index.html";
 
-console.log(mult(2, 4))
+const mult = (a, b) => a * b;
+
+console.log(mult(2, 4));
