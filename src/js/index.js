@@ -1,4 +1,4 @@
-import "./index.scss";
+import "../scss/index.scss";
 
 const mult = (a, b) => a * b;
 
