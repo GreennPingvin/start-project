@@ -20,6 +20,7 @@ module.exports = {
   output: {
     filename: getFileName("js"),
     path: path.resolve(__dirname, "dist"),
+    assetModuleFilename: "images/[hash][ext][query]",
     clean: true,
   },
   devServer: {
@@ -36,7 +37,7 @@ module.exports = {
       filename: "css/[name].[contenthash].css",
     }),
     new CopyPlugin({
-      patterns: [{ from: 'src/assets', to: "assets" }],
+      patterns: [{ from: "src/assets", to: "assets" }],
     }),
   ],
   module: {
@@ -67,6 +68,17 @@ module.exports = {
           },
           "sass-loader",
         ],
+      },
+      {
+        test: /\.(png|jpg)/,
+        type: "asset/resource",
+      },
+      {
+        test: /\.(woff|woff2)/,
+        type: "asset/resource",
+        generator: {
+          filename : 'fonts/[hash][ext][query]'
+        },
       },
     ],
   },

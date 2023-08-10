@@ -1,5 +1,6 @@
 @import "reset";
 @import "vars";
+@import "fonts";
 
 body {
   background-color: beige;
@@ -11,6 +12,8 @@ h1 {
 }
 
 .outer {
+  background-image: url("../img/code.png");
+
   .inner {
     background-color: green;
     color: white;
