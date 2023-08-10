@@ -2,20 +2,23 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const mode = process.env.NODE_ENV || "development";
+const isDev = mode === "development";
+const target = isDev ? "web" : "browserslist";
+const devtool = isDev ? "source-map" : undefined;
 
-const devMode = mode === "development";
-const target = devMode ? "web" : "browserslist";
-const devtool = devMode ? "source-map" : undefined;
+const getFileName = (ext) =>
+  isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 
 module.exports = {
   mode,
   target,
   devtool,
-  entry: "./src/index.js",
+  entry: path.resolve(__dirname, "src/js/index.js"),
   output: {
-    filename: "[name].[contenthash].js",
+    filename: getFileName("js"),
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },
@@ -26,19 +29,26 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "static", "index.html"),
+      template: path.resolve(__dirname, "src/index.html"),
     }),
     new webpack.ProgressPlugin(),
     new MiniCssExtractPlugin({
-      filename: "css.[name].[contenthash].css",
+      filename: "css/[name].[contenthash].css",
+    }),
+    new CopyPlugin({
+      patterns: [{ from: 'src/assets', to: "assets" }],
     }),
   ],
   module: {
     rules: [
       {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
+      {
         test: /\.(c|sc|sa)ss$/i,
         use: [
-          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+          isDev ? "style-loader" : MiniCssExtractPlugin.loader,
           "css-loader",
           {
             loader: "postcss-loader",
